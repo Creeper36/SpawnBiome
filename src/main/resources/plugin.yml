@@ -1,0 +1,16 @@
+name: SpawnBiome
+main: com.creeperusa.spawnbiome.SpawnBiomePlugin
+version: 1.0.0
+api-version: '1.21'
+author: Creeper USA
+
+commands:
+  spawnbiome:
+    description: Prints the actual biome at the world's spawn location.
+    usage: /spawnbiome [world]
+    permission: spawnbiome.use
+
+permissions:
+  spawnbiome.use:
+    description: Allows use of /spawnbiome.
+    default: op
