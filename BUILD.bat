@@ -12,9 +12,7 @@ SET "MAVEN_HOME=C:\BUILD\MAVEN"
 SET "JAVA_EXE=C:\BUILD\JAVA\bin\java.exe"
 SET "JAVAP_EXE=C:\BUILD\JAVA\bin\javap.exe"
 SET "MAVEN_CMD=C:\BUILD\MAVEN\mvn\bin\mvn.cmd"
-
 SET "PATH=%JAVA_HOME%\bin;%MAVEN_HOME%\mvn\bin;%PATH%"
-
 ECHO.
 ECHO ====================
 ECHO   BUILD SPAWNBIOME
@@ -28,8 +26,16 @@ IF NOT EXIST "%POMXML_DIR%\pom.xml" (
     EXIT /B 1
 )
 IF NOT EXIST "%JAVA_EXE%" (
-    ECHO ERROR: Java 17 was not found at:
+    ECHO ERROR: Java was not found at:
     ECHO        "%JAVA_EXE%"
+    ECHO.
+    PAUSE
+    EXIT /B 1
+)
+
+IF NOT EXIST "%JAVAP_EXE%" (
+    ECHO ERROR: Java class disassembler was not found at:
+    ECHO        "%JAVAP_EXE%"
     ECHO.
     PAUSE
     EXIT /B 1
@@ -90,12 +96,19 @@ IF NOT EXIST "%POMXML_DIR%\TARGET\SpawnBiome.jar" (
     EXIT /B 1
 )
 ECHO.
-ECHO Verifying class major version. Java 17 should be major version 61.
-IF EXIST "%JAVAP_EXE%" (
-    "%JAVAP_EXE%" -verbose -classpath "%POMXML_DIR%\TARGET\SpawnBiome.jar" com.creeperusa.spawnbiome.SpawnBiomePlugin | findstr /C:"major version"
-) ELSE (
-    ECHO WARNING: javap.exe not found, skipping bytecode check.
-)
+ECHO Java being used:
+"%JAVA_EXE%" -version
+ECHO.
+ECHO Verifying class major version:
+ECHO   Java 8   expecting major 52
+ECHO   Java 11  expecting major 55
+ECHO   Java 16  expecting major 60
+ECHO   Java 17  expecting major 61
+ECHO   Java 21  expecting major 65
+ECHO   Java 25  expecting major 69
+ECHO.
+ECHO Actual class major found:
+"%JAVAP_EXE%" -verbose -classpath "%POMXML_DIR%\TARGET\SpawnBiome.jar" com.creeperusa.spawnbiome.SpawnBiomePlugin | findstr /C:"major version"
 ECHO.
 ECHO ==================
 ECHO   BUILD COMPLETE
