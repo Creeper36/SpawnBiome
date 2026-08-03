@@ -37,7 +37,7 @@ public final class SpawnBiomePlugin extends JavaPlugin {
 
         Location spawn = world.getSpawnLocation();
         Biome biome = spawn.getBlock().getComputedBiome();
-        NamespacedKey key = biome.getKeyOrThrow();
+        NamespacedKey key = biome.getKey();
 
         String biomeId = key.getNamespace() + ":" + key.getKey();
         String prettyName = toPrettyName(key.getKey());
